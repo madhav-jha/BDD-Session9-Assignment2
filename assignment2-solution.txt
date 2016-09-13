@@ -1,0 +1,26 @@
+student_details = LOAD 'student-details-dataset.txt' USING PigStorage(',') AS (name:chararray, college:chararray, dob:chararray, stream:chararray, grade:float, state:chararray, city:chararray);
+
+1. Find the number of students who scored less than 5(50%).
+
+grade_less_than_five = FILTER student_details BY grade<5;
+grouped_grade_less_than_five = GROUP grade_less_than_five ALL;
+count_grouped_grade_less_than_five = FOREACH grouped_grade_less_than_five GENERATE COUNT(grade_less_than_five);
+DUMP count_grouped_grade_less_than_five;
+
+2. List the name of students who are from Alaska.
+
+students_from_alaska = FILTER student_details BY state MATCHES 'alaska';
+DUMP students_from_alaska;
+
+3. How many government colleges are there in Alabama?
+
+filtered_student_details = FILTER student_details BY (college MATCHES 'government' AND state MATCHES 'alabama');
+grouped_filtered_student_details = GROUP filtered_student_details ALL;
+count_grouped_filtered_student_details = FOREACH grouped_filtered_student_details GENERATE COUNT(filtered_student_details);
+DUMP count_grouped_filtered_student_details;
+
+4. List the name of students who are from Oregon and pursuing BE.
+
+students_from_oregon_be = FILTER student_details BY (state MATCHES 'oregon' AND stream MATCHES 'BE'); 
+DUMP students_from_oregon_be;
+
